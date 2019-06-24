@@ -1,6 +1,8 @@
 // This program is develop and Compile using VS Code and Free Pascal Compiler version 3.0.4 [2017/10/06] for i386
 
-
+{
+    10116370 Alexander M S
+}
 Program ParserButtomUp;
 
 uses crt, wincrt, sysutils;
@@ -252,7 +254,12 @@ begin
             input_data:='<C>';
             push_data(top,input_data);
         end;
-    end;
+    else
+        begin
+            writeln('No Rule Selected');
+            readln;
+        end;        
+    end;//end case
 
 end;
 
@@ -279,12 +286,28 @@ begin
     //data = stack
     y:=StrToInt(data[top]);
     find_action:=parser_table[y,x];
+
+    //if found no action in parser table
+    if (find_action='') then
+    begin
+        find_action:='not accepted';
+        write('no action found on parser table');
+        readln;
+        exit;
+    end;
+
 end;
 
 function find_shift_number(recent_action:string):string;
 begin
     if (recent_action[1]='s') then
-        find_shift_number:=recent_action[2];
+        find_shift_number:=recent_action[2]
+    else
+    begin
+        find_shift_number:='';
+        writeln('Error in find_shift_number, recent action:', recent_action, '*');
+        readln;
+    end;
 end;
 
 procedure delete_left_most_string;
@@ -297,6 +320,11 @@ begin
         end;
 
         input_string[length(input_string)]:=' ';
+    end
+    else
+    begin
+        writeln('Error in delete_left_most_string');
+        readln;
     end;
 end;
 
@@ -346,6 +374,7 @@ begin
     writeln('===Input String===');writeln('e.g:cdd');
     writeln('------------------');
     write(':');readln(input_string);
+    
     input_string:=input_string+'$';
     {
         data = stack
@@ -368,14 +397,14 @@ begin
     if (recent_action[1]='s') then 
     begin
     // push stack
-        //1 push terminal 
+        //1.) push terminal 
         input_data:=input_string[1];
         push_data(top,input_data);
 
         //delete left most string
         delete_left_most_string;
 
-        //2 push number
+        //2.) push number
         input_data:=find_shift_number(recent_action);
         push_data(top,input_data); 
     end;
@@ -391,7 +420,7 @@ begin
     end;
         z:=z+1;
 
-    //until (z=8);
+    
     until (recent_action='ACC');
   
 
