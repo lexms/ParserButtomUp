@@ -1,8 +1,5 @@
 // This program is develop and Compile using VS Code and Free Pascal Compiler version 3.0.4 [2017/10/06] for i386
 
-{
-    10116370 Alexander M S
-}
 Program ParserButtomUp;
 
 uses crt, wincrt, sysutils;
